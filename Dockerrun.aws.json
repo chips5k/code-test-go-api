@@ -1,0 +1,16 @@
+{
+    "EBDockerrunVersion": "1",
+    "Image": {
+      "Name": "chips5k/go-api",
+      "Update": "true"
+    },
+    "Ports": [
+      {
+        "ContainerPort": "5000",
+        "HostPort": "80"    
+      }
+    ], 
+    "Logging": "/go/src/app/logs",
+    "Entrypoint": "/go/src/app"
+  }
+  
