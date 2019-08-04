@@ -5,4 +5,4 @@ jobs:
     steps:
       - checkout
       - run: docker build -t go-api .
-      - run: echo "done building"
+      - run: docker run --entrypoint go go-api test

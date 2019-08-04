@@ -1,11 +1,11 @@
 FROM golang:1.8
 
 WORKDIR /go/src/app
-COPY main.go .
+COPY main.go main_test.go ./
 
 RUN go get -d -v ./...
 RUN go install -v ./...
 
-EXPOSE 80
+EXPOSE 5000
 
-CMD ["app"]
+ENTRYPOINT ["app"]
