@@ -1,0 +1,1 @@
+[![CircleCI](https://circleci.com/gh/chips5k/go-api.svg?style=svg)](https://circleci.com/gh/chips5k/go-api)
