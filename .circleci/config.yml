@@ -6,13 +6,13 @@ jobs:
       - checkout
       - run: 
           name: build
-          command: docker build -t chips5k/go-api:$CIRCLE_BUILD_NUM .
+          command: docker build -t chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
       - run: 
           name: test
-          command: docker run --entrypoint go chips5k/go-api:$CIRCLE_BUILD_NUM  test
+          command: docker run --entrypoint go chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM  test
       - run: 
           name: DockerHub login
           command: echo "$DOCKER_PASS" | docker login --username chips5k --password-stdin
       - run: 
           name: DockerHub push
-          command: docker push chips5k/go-api:$CIRCLE_BUILD_NUM
+          command: docker push chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
