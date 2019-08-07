@@ -8,6 +8,9 @@ jobs:
           name: build
           command: docker build -t chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
       - run: 
+          name: tag
+          command: docker tag chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM chips5k/go-api:latest
+      - run: 
           name: test
           command: docker run --entrypoint go chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM  test
       - run: 
@@ -16,3 +19,26 @@ jobs:
       - run: 
           name: DockerHub push
           command: docker push chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+  deploy:
+    docker:
+      - image: circleci/python:3.7-stretch
+    steps:
+      - run:
+        name: Install awscli
+        command: sudo pip install awscli
+      - checkout
+      - run:
+        name: Deploy
+        command: eb deploy production-go-api
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master

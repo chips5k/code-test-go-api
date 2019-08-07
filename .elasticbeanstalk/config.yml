@@ -1,0 +1,11 @@
+branch-defaults:
+  master:
+    environment: production-go-api
+deploy:
+  artifact: Dockerrun.aws.json
+global:
+  application_name: go-api
+  default_ec2_keyname: chips5k-ap-southeast-2-key-pair
+  default_platform: docker
+  default_region: ap-southeast-2
+  profile: eb-cli
