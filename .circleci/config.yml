@@ -8,6 +8,9 @@ jobs:
           name: build
           command: docker build -t chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
       - run: 
+          name: tag
+          command: docker tag chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM chips5k/go-api:latest
+      - run: 
           name: test
           command: docker run --entrypoint go chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM  test
       - run: 
@@ -26,7 +29,7 @@ jobs:
       - checkout
       - run:
         name: Deploy
-        command: eb deploy $CIRCLE_BRANCH-go-api
+        command: eb deploy production-go-api
 
 workflows:
   version: 2
