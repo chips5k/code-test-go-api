@@ -19,17 +19,20 @@ jobs:
       - run: 
           name: DockerHub push
           command: docker push chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+      - run: 
+          name: DockerHub push
+          command: docker push chips5k/go-api:latest
   deploy:
     docker:
       - image: circleci/python:3.7-stretch
     steps:
       - run:
-        name: Install awscli
-        command: sudo pip install awscli
+          name: Install awscli
+          command: sudo pip install awscli
       - checkout
       - run:
-        name: Deploy
-        command: eb deploy production-go-api
+          name: Deploy
+          command: eb deploy production-go-api
 
 workflows:
   version: 2
