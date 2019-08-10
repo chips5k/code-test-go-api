@@ -2,3 +2,4 @@
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/config.yml
+Dockerrun.aws.json.bk
