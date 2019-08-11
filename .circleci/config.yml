@@ -47,12 +47,14 @@ jobs:
   
 workflows:
   version: 2
-  build-deploy:
-    jobs:
+  build:
+    jobs: 
       - build_test:
           filters:
             branches: 
               ignore: master
+  build_deploy:
+    jobs:
       - build_test_tag_prod:
           filters:
             branches:
@@ -67,7 +69,7 @@ workflows:
       - hold_teardown_prod:
           type: approval
           requires:
-            deploy_prod
+            - deploy_prod
           filters:
             branches:
               only: master
