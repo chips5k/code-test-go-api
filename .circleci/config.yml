@@ -79,3 +79,9 @@ workflows:
           filters:
             branches:
               only: master
+      - teardown_prod:
+          requires:
+            - hold_teardown_prod
+          filters:
+            bramches:
+              only: master
