@@ -36,7 +36,7 @@ jobs:
       - checkout
       - run:
           name: Deploy
-          command: ./scripts/04-deploy.sh production-go-api
+          command: ./scripts/04-deploy.sh production-go-api $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
   teardown_prod:
     machine: true
     steps: 
