@@ -83,5 +83,5 @@ workflows:
           requires:
             - hold_teardown_prod
           filters:
-            bramches:
+            branches:
               only: master
