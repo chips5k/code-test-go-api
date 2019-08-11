@@ -2,6 +2,6 @@
     "CommitSha": "${sha}",
     "Branch": "${branch}",
     "BuildNumber": "${number}",
-    "BuildDatetime": "${datetime}",
+    "BuildDateTime": "${datetime}",
     "DockerHubImage": "${image}"
 }
