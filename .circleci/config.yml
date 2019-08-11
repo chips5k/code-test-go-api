@@ -49,11 +49,11 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build_test
+      - build_test:
           filters:
             branches: 
               ignore: master
-      - build_test_tag_prod
+      - build_test_tag_prod:
           filters:
             branches:
               only: master
