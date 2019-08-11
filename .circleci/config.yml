@@ -6,23 +6,26 @@ jobs:
       - checkout
       - run: 
           name: build
-          command: ./scripts/1-docker-build.sh
+          command: ./scripts/01-docker-build.sh
       - run: 
           name: test
-          command: ./scripts/2-docker-test.sh
+          command: ./scripts/02-docker-test.sh
   build_test_tag_prod:
     machine: true
     steps:
       - checkout
       - run: 
+          name: write meta
+          command: ./scripts/00-write-meta.sh $CIRCLE_SHA1 $CIRCLE_BRANCH $CIRCLE_BUILD_NUM
+      - run: 
           name: build
-          command: ./scripts/1-docker-build.sh $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+          command: ./scripts/01-docker-build.sh $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
       - run: 
           name: test
-          command: command: ./scripts/2-docker-test.sh $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+          command: ./scripts/02-docker-test.sh $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
       - run: 
           name: DockerHub tag and push
-          command: ./scripts/docker-tag-and-push production-go-api $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+          command: ./scripts/03-docker-tag-and-push production-go-api $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
   deploy_prod:
     docker:
       - image: circleci/python:3.7-stretch
@@ -33,13 +36,13 @@ jobs:
       - checkout
       - run:
           name: Deploy
-          command: ./scripts/deploy.sh production-go-api
+          command: ./scripts/04-deploy.sh production-go-api
   teardown_prod:
     machine: true
     steps: 
       - run
         - name: Tear environment now
-        - command: ./scripts/teardown.sh production-go-api 
+        - command: ./scripts/05-teardown.sh production-go-api 
             
   
 workflows:
