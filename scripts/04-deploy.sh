@@ -1,7 +1,7 @@
 #!/bin/bash
 
-environment = {$1:-development-go-api}
-tag=${$2:-dev}
+environment = ${1:-development-go-api}
+tag=${2:-dev}
 
 echo "Setting deploy tag to ${tag}"
 sed -i.bk -e "s/\${tag}/$tag/" Dockerrun.aws.json
