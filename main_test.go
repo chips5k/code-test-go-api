@@ -62,6 +62,8 @@ func TestGetMetaRoute(t *testing.T) {
 	
 	rr := performGetRequest(t, "/meta")
 
+	var meta = ParseMetaJSON("meta.json");
+
 	// Check the response status is correct
 	if rr.Code != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v expected %v",
@@ -69,9 +71,8 @@ func TestGetMetaRoute(t *testing.T) {
 	}
 
 	// Check the response body is correct.
-	expected := `{"CommitSha":"","Branch":"","BuildNumber":"","BuildWorkflowID":"","BuildDateTime":"","DockerHubImage":""}`
-	if rr.Body.String() != expected {
+	if rr.Body.String() != string(meta) {
 		t.Errorf("handler returned unexpected body: got %v expected %v",
-			rr.Body.String(), expected)
+			rr.Body.String(), string(meta))
 	}
 }

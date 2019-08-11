@@ -41,22 +41,37 @@ func HealthCheckRouteHandler(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte(`{"kicking": true}`))
 }
 
-//MetaRouteHandler ... responds with meta data about the app
-func MetaRouteHandler(w http.ResponseWriter, r *http.Request) {
-
+//ParseMetaJSON ... retrieve meta data from file and parse into struct
+func ParseMetaJSON (filePath string) []byte {
 	var meta Meta
 
-	file, _ := ioutil.ReadFile("./meta.json");
+	file, err := ioutil.ReadFile(filePath);
+
+	if err != nil {
+		panic(err)
+	}
 
 	metaJSON := string(file)
 	
 	json.Unmarshal([]byte(metaJSON), &meta)
 
-	responseJSON, _ := json.Marshal(meta)
+	result, err := json.Marshal(meta)
+
+	if(err != nil) {
+		panic(err)
+	}
+
+	return result;
+}
+//MetaRouteHandler ... responds with meta data about the app
+func MetaRouteHandler(w http.ResponseWriter, r *http.Request) {
+
+	var meta = ParseMetaJSON("./meta.json");
+	
 
     w.WriteHeader(http.StatusOK)
     w.Header().Set("Content-Type", "application/json")
-    w.Write(responseJSON)
+    w.Write(meta)
 }
 
 //DefaultRouteHandler ... responds to requests on the default endpoint
