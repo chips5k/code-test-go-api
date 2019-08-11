@@ -24,9 +24,11 @@
       1. run `./dev-tasks.sh deploy-dev` to deploy to the dev eb env
       2. run `./dev-tasks.sh teardown-dev` to remove the dev environment
 
+# Deploying to production
 
 # CI/CD, Environments, Automation etc...
 
+# Improvements, Explanations, reasons...
 
 
 
