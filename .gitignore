@@ -3,3 +3,4 @@
 .elasticbeanstalk/*
 !.elasticbeanstalk/config.yml
 Dockerrun.aws.json.bk
+meta.json.bk
