@@ -38,8 +38,13 @@ jobs:
           name: Deploy
           command: ./scripts/04-deploy.sh production-go-api $CIRCLE_BRANCH-$CIRCLE_WORKFLOW_ID
   teardown_prod:
-    machine: true
-    steps: 
+    docker:
+      - image: circleci/python:3.7-stretch
+    steps:
+      - run:
+          name: Install awsebcli
+          command: sudo pip install awsebcli
+      - checkout
       - run:
         - name: Tear environment down
         - command: ./scripts/05-teardown.sh production-go-api 
