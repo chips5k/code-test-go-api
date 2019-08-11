@@ -69,7 +69,7 @@ func TestGetMetaRoute(t *testing.T) {
 	}
 
 	// Check the response body is correct.
-	expected := `{"CommitSha":"","Branch":"","BuildNumber":"","BuildDateTime":"","DockerHubImage":""}`
+	expected := `{"CommitSha":"","Branch":"","BuildNumber":"", "BuildWorkflowID": "", "BuildDateTime":"","DockerHubImage":""}`
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v expected %v",
 			rr.Body.String(), expected)

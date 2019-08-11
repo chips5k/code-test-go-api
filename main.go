@@ -20,6 +20,7 @@ type Meta struct {
 	CommitSha string
 	Branch string
 	BuildNumber string
+	BuildWorkflowID string
 	BuildDateTime string
 	DockerHubImage string
 }
