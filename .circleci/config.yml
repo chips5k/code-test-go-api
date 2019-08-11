@@ -40,8 +40,8 @@ jobs:
   teardown_prod:
     machine: true
     steps: 
-      - run
-        - name: Tear environment now
+      - run:
+        - name: Tear environment down
         - command: ./scripts/05-teardown.sh production-go-api 
             
   
