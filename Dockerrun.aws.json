@@ -5,7 +5,7 @@
     "Key": ".dockercfg"
   },
   "Image": {
-    "Name": "chips5k/go-api:${tag}",
+    "Name": "chips5k/go-api:dev",
     "Update": "true"
   },
   "Ports": [
