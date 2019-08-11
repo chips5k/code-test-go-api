@@ -25,7 +25,7 @@ jobs:
           command: ./scripts/02-docker-test.sh $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
       - run: 
           name: DockerHub tag and push
-          command: ./scripts/03-docker-tag-and-push production-go-api $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+          command: ./scripts/03-docker-tag-and-push.sh production-go-api $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
   deploy_prod:
     docker:
       - image: circleci/python:3.7-stretch
