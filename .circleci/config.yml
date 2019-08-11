@@ -1,28 +1,32 @@
 version: 2
 jobs:
-  build:
+  build_test:
     machine: true
     steps:
       - checkout
       - run: 
           name: build
-          command: docker build -t chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM .
-      - run: 
-          name: tag
-          command: docker tag chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM chips5k/go-api:latest
+          command: ./scripts/01-docker-build.sh
       - run: 
           name: test
-          command: docker run --entrypoint go chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM  test
+          command: ./scripts/02-docker-test.sh
+  build_test_tag_prod:
+    machine: true
+    steps:
+      - checkout
       - run: 
-          name: DockerHub login
-          command: echo "$DOCKER_PASS" | docker login --username chips5k --password-stdin
+          name: write meta
+          command: ./scripts/00-write-meta.sh $CIRCLE_SHA1 $CIRCLE_BRANCH $CIRCLE_BUILD_NUM
       - run: 
-          name: DockerHub push
-          command: docker push chips5k/go-api:$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+          name: build
+          command: ./scripts/01-docker-build.sh $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
       - run: 
-          name: DockerHub push
-          command: docker push chips5k/go-api:latest
-  deploy:
+          name: test
+          command: ./scripts/02-docker-test.sh $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+      - run: 
+          name: DockerHub tag and push
+          command: ./scripts/03-docker-tag-and-push production-go-api $CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+  deploy_prod:
     docker:
       - image: circleci/python:3.7-stretch
     steps:
@@ -32,16 +36,46 @@ jobs:
       - checkout
       - run:
           name: Deploy
-          command: eb deploy production-go-api
-
+          command: ./scripts/04-deploy.sh production-go-api
+  teardown_prod:
+    machine: true
+    steps: 
+      - run:
+        - name: Tear environment down
+        - command: ./scripts/05-teardown.sh production-go-api 
+            
+  
 workflows:
   version: 2
-  build-deploy:
+  build:
+    jobs: 
+      - build_test:
+          filters:
+            branches: 
+              ignore: master
+  build_deploy:
     jobs:
-      - build
-      - deploy:
+      - build_test_tag_prod:
+          filters:
+            branches:
+              only: master
+      - hold_deploy_prod:
+          type: approval 
+          requires: 
+            - build_test_tag_prod
+          filters:
+            branches:
+              only: master
+      - hold_teardown_prod:
+          type: approval
           requires:
-            - build
+            - deploy_prod
+          filters:
+            branches:
+              only: master
+      - deploy_prod:
+          requires:
+            - hold_deploy_prod
           filters:
             branches:
               only: master
