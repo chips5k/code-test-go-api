@@ -3,7 +3,6 @@ case $1 in
      "start")      
           go get -d -v ./...
           go install -v ./...
-          go install github.com/canthefason/go-watcher/cmd/watcher
           go-api
           ;;
      "start-watch")      
