@@ -29,7 +29,12 @@
  - make a branch, commit and push a small change, open a pr and verify tests run
  - approve the pr, jump into circle ci and follow the jobs then manually approve the deployment.
  - the environments will be down, so doing the above should deploy the app, and if you check the output of the deploy job, you'll be able to grab the deployment url when its done.
+ - Once you've checked it in a browser or api client, approve the teardown step to remove the environment and save me money.
  - ping me if you need to :)
+
+Note - When looking in circleci, click the "Workflows" button to the left, then click the "master / build_deploy" job, from here you should be able to see the linked jobs, and click on the "hold_deploy_prod" step and provide approval. see below
+
+![Steps](circle.png)
 
 # Developer setup
 1. Ensure you have the following installed and configured:
