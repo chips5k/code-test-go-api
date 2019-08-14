@@ -68,8 +68,3 @@ Current workflow/jobs/pipeline is setup as follows:
  - IF no environment is present when running the deploy stage, elastic beanstalk commands will be called to bring it up.
 
 So normal procedure for getting something into prod: open a pr against a branch, merge it, then login to circleci and go to the workflow, then approve the deploy stage.
-
-
-
-
-
