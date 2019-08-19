@@ -20,4 +20,4 @@ meta.json
 
 docker build -t "chips5k/go-api" -t "chips5k/go-api:$sha" .
 echo "$DOCKER_PASS" | docker login --username chips5k --password-stdin
-docker push
+docker push "chips5k/go-api:$sha"

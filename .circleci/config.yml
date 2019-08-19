@@ -44,9 +44,15 @@ workflows:
   master:
     jobs:
       - build
-      - test
-      - publish
-      - deploy
+      - test:
+          requires:
+            - build
+      - publish:
+          requires:
+            - test
+      - deploy:
+          requires:
+            - publish
       - approve-destroy:
           type: approval
           requires:
