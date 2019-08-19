@@ -4,7 +4,7 @@ set -euo pipefail
 
 environment="production-go-api"
 workflowID=$CIRCLE_WORKFLOW_ID
-tag="chips5k/go-api:$workflowID"
+tag=$workflowID
 
 echo "Setting deploy tag to $tag"
 sed -i.bk -e "s@\${tag}@${tag}@" Dockerrun.aws.json

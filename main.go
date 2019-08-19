@@ -34,7 +34,6 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 
 //HealthCheckRouteHandler ... responds with a 200 ok if alive and kicking
 func HealthCheckRouteHandler(w http.ResponseWriter, r *http.Request) {
-
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`{"kicking": true}`))
@@ -45,17 +44,14 @@ func ParseMetaJSON(filePath string) []byte {
 	var meta Meta
 
 	file, err := ioutil.ReadFile(filePath)
-
 	if err != nil {
 		panic(err)
 	}
 
 	metaJSON := string(file)
-
 	json.Unmarshal([]byte(metaJSON), &meta)
 
 	result, err := json.Marshal(meta)
-
 	if err != nil {
 		panic(err)
 	}
@@ -65,9 +61,7 @@ func ParseMetaJSON(filePath string) []byte {
 
 //MetaRouteHandler ... responds with meta data about the app
 func MetaRouteHandler(w http.ResponseWriter, r *http.Request) {
-
 	var meta = ParseMetaJSON("./meta.json")
-
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(meta)

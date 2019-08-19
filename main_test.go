@@ -14,6 +14,7 @@ func performGetRequest(t *testing.T, endpoint string) *httptest.ResponseRecorder
 	if err != nil {
 		t.Fatal(err)
 	}
+	
 	rr := httptest.NewRecorder()
 	handler := http.Handler(a.Router)
 	handler.ServeHTTP(rr, req)
