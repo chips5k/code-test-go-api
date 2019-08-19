@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 sha=$CIRCLE_SHA1
 branch=$CIRCLE_BRANCH
 number=$CIRCLE_BUILD_NUM
@@ -19,5 +21,6 @@ sed -i.bk \
 meta.json
 
 docker build -t "chips5k/go-api" -t "chips5k/go-api:$sha" .
+
 echo "$DOCKER_PASS" | docker login --username chips5k --password-stdin
 docker push "chips5k/go-api:$sha"
