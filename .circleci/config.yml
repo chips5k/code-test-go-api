@@ -43,7 +43,10 @@ workflows:
   version: 2
   master:
     jobs:
-      - build
+      - lint
+      - build:
+          requires:
+            - lint
       - test:
           requires:
             - build
