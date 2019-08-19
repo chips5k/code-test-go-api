@@ -21,7 +21,7 @@ func performGetRequest(t *testing.T, endpoint string) *httptest.ResponseRecorder
 	return rr
 }
 func TestGetDefaultRoute(t *testing.T) {
-	
+
 	rr := performGetRequest(t, "/")
 
 	// Check the response status is correct
@@ -38,9 +38,8 @@ func TestGetDefaultRoute(t *testing.T) {
 	}
 }
 
-
 func TestGetHealthRoute(t *testing.T) {
-	
+
 	rr := performGetRequest(t, "/health")
 
 	// Check the response status is correct
@@ -57,12 +56,11 @@ func TestGetHealthRoute(t *testing.T) {
 	}
 }
 
-
 func TestGetMetaRoute(t *testing.T) {
-	
+
 	rr := performGetRequest(t, "/meta")
 
-	var meta = ParseMetaJSON("meta.json");
+	var meta = ParseMetaJSON("meta.json")
 
 	// Check the response status is correct
 	if rr.Code != http.StatusOK {

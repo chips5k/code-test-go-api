@@ -1,91 +1,55 @@
 version: 2
 jobs:
-  build_test:
-    machine: true
-    steps:
-      - checkout
-      - run: 
-          name: build
-          command: ./scripts/01-docker-build.sh
-      - run: 
-          name: test
-          command: ./scripts/02-docker-test.sh
-  build_test_tag_prod:
-    machine: true
-    steps:
-      - checkout
-      - run: 
-          name: write meta
-          command: ./scripts/00-write-meta.sh $CIRCLE_SHA1 $CIRCLE_BRANCH $CIRCLE_BUILD_NUM $CIRCLE_WORKFLOW_ID
-      - run: 
-          name: build
-          command: ./scripts/01-docker-build.sh $CIRCLE_BRANCH-$CIRCLE_WORKFLOW_ID
-      - run: 
-          name: test
-          command: ./scripts/02-docker-test.sh $CIRCLE_BRANCH-$CIRCLE_WORKFLOW_ID
-      - run: 
-          name: DockerHub tag and push
-          command: ./scripts/03-docker-tag-and-push.sh $CIRCLE_BRANCH-$CIRCLE_WORKFLOW_ID $CIRCLE_BUILD_NUM
-  deploy_prod:
+  lint:
     docker:
-      - image: circleci/python:3.7-stretch
+      - image: circleci/golang
     steps:
-      - run:
-          name: Install awsebcli
-          command: sudo pip install awsebcli
       - checkout
-      - run:
-          name: Deploy
-          command: ./scripts/04-deploy.sh production-go-api $CIRCLE_BRANCH-$CIRCLE_WORKFLOW_ID
-  teardown_prod:
-    docker:
-      - image: circleci/python:3.7-stretch
-    steps:
-      - run:
-          name: Install awsebcli
-          command: sudo pip install awsebcli
-      - checkout
-      - run:
-          name: Teardown
-          command: ./scripts/05-teardown.sh production-go-api
-  
-workflows:
-  version: 2
+      - run: sudo apt-get install shellcheck
+      - run: ./bin/lint.sh
   build:
-    jobs: 
-      - build_test:
-          filters:
-            branches: 
-              ignore: master
-  build_deploy:
+    machine:
+      image: circleci/classic:latest
+    steps:
+      - checkout
+      - run: ./bin/build.sh
+  test:
+    machine:
+      image: circleci/classic:latest
+    steps:
+      - checkout
+      - run: ./bin/test.sh
+  publish:
+    machine:
+      image: circleci/classic:latest
+    steps:
+      - checkout
+      - run: ./bin/publish.sh
+  deploy:
+    docker:
+      - image: circleci/python:3.7-stretch
+    steps:
+      - run: sudo pip install awsebcli
+      - checkout
+      - run: ./bin/deploy.sh
+  destroy:
+    docker:
+      - image: circleci/python:3.7-stretch
+    steps:
+      - run: sudo pip install awsebcli
+      - checkout
+      - run: ./bin/destroy.sh
+workflows:
+  master:
     jobs:
-      - build_test_tag_prod:
-          filters:
-            branches:
-              only: master
-      - hold_deploy_prod:
-          type: approval 
-          requires: 
-            - build_test_tag_prod
-          filters:
-            branches:
-              only: master
-      - hold_teardown_prod:
+      - build
+      - test
+      - publish
+      - deploy
+      - approve-destroy:
           type: approval
           requires:
-            - deploy_prod
-          filters:
-            branches:
-              only: master
-      - deploy_prod:
+            - deploy
+      - destroy:
           requires:
-            - hold_deploy_prod
-          filters:
-            branches:
-              only: master
-      - teardown_prod:
-          requires:
-            - hold_teardown_prod
-          filters:
-            branches:
-              only: master
+            - approve-destroy
