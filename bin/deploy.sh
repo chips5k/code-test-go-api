@@ -1,8 +1,13 @@
 #!/bin/bash
-
 set -euo pipefail
+die(){ echo "$1, aborting..."; exit -1; }
 
-environment="production-go-api"
+[[ ! -v CIRCLE_WORKFLOW_ID1 ]] && die 'missing environment variable CIRCLE_WORKFLOW_ID';
+[[ ! -v EB_ENVIRONMENT ]] && die 'missing environment variable EB_ENVIRONMENT';
+
+hash eb 2>/dev/null || die 'missing depedency eb (awsebcli)';
+
+environment=$EB_ENVIRONMENT
 workflowID=$CIRCLE_WORKFLOW_ID
 tag=$workflowID
 

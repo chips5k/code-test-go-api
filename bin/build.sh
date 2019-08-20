@@ -1,6 +1,15 @@
 #!/bin/bash
-
 set -euo pipefail
+die(){ echo "$1, aborting..."; exit -1; }
+
+[[ ! -v CIRCLE_SHA1 ]] && die 'missing environment variable CIRCLE_SHA1';
+[[ ! -v CIRCLE_BRANCH ]] && die 'missing environment variable CIRCLE_BRANCH';
+[[ ! -v CIRCLE_BUILD_NUM ]] && die 'missing environment variable CIRCLE_BUILD_NUM';
+[[ ! -v CIRCLE_WORKFLOW_ID ]] && die 'missing environment variable CIRCLE_WORKFLOW_ID';
+[[ ! -v DOCKER_PASS ]] && die 'missing environment variable DOCKER_PASS';
+
+hash docker 2>/dev/null || die 'missing depedency eb (awsebcli)';
+hash sed 2>/dev/null || die 'missing depedency sed';
 
 sha=$CIRCLE_SHA1
 branch=$CIRCLE_BRANCH

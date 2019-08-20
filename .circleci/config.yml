@@ -6,6 +6,7 @@ jobs:
     steps:
       - checkout
       - run: sudo apt-get install shellcheck
+      - run: go get golang.org/x/lint/golint
       - run: ./bin/lint.sh
   build:
     machine:
@@ -28,6 +29,8 @@ jobs:
   deploy:
     docker:
       - image: circleci/python:3.7-stretch
+        environment:
+          EB_ENVIRONMENT: production-go-api
     steps:
       - run: sudo pip install awsebcli
       - checkout
@@ -35,6 +38,8 @@ jobs:
   destroy:
     docker:
       - image: circleci/python:3.7-stretch
+        environment:
+          EB_ENVIRONMENT: production-go-api
     steps:
       - run: sudo pip install awsebcli
       - checkout
