@@ -30,7 +30,6 @@ If you wish to tear the environment down, there is a manual approval step in the
 
 If you wish to skip running the ci pipeline, include [skip ci] in your commit message.
 
-
 # Notes
 - I've chosen to stick with building, and testing the docker image (since thats what we are going to push all the way), rather than just lint, build, test with go directly.
 - assume developers can run required tools locally (e.g they wont use docker for development purposes)
