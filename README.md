@@ -45,4 +45,5 @@ If you wish to skip running the ci pipeline, include [skip ci] in your commit me
 - if the above was put in place, scripts could be updated to fail on missing deps
 - versioning/numbering of builds is a bit wonky since circleci don't share the build num across an entire workflow. ideally i'd hook something like semver up but im not entirely sure how best to do this
 - tests are super basic currently. given a better understanding of go i would flesh these out better and cover a lot more (inc unhappy path, middleware setup etc...)
+- learn go and go get properly and fix up places where i needlessly install everything...
   
