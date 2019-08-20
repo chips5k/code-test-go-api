@@ -20,7 +20,7 @@ To run the tests:
 go test
 ```
 
-If you want to quickly/easily lint shell and go files:
+To lint shell and go files:
 ```
 ./bin/lint.sh
 ```
@@ -32,10 +32,10 @@ All commits will trigger the ci/cd pipeline/workflow in circleci. this will auto
 
 If you wish to tear the environment down, there is a manual approval step in the workflow to do so.
 
-If you wish to skip running the ci pipeline, include [skip ci] in your commit message.
+If you wish to skip running the ci pipeline, include [skip ci] in your commit message. note circleci seems to treat this as a failure...
 
 # Notes
-- I've chosen to stick with building, and testing the docker image (since thats what we are going to push all the way), rather than just lint, build, test with go directly.
+- I've chosen to stick with building, and testing the docker image (since thats the artifact we are going to push all the way), rather than just lint, build and test with go directly.
 - assume developers can run required tools locally (e.g they wont use docker for development purposes)
 - assume developers wont be pushing anything manually
 - i've included automatic environment creation and teardown purely because this is a toy project and i dont want to accidently leave it running in aws.
