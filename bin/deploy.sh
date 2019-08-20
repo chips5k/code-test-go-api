@@ -2,7 +2,7 @@
 set -euo pipefail
 die(){ echo "$1, aborting..."; exit -1; }
 
-[[ ! -v CIRCLE_WORKFLOW_ID1 ]] && die 'missing environment variable CIRCLE_WORKFLOW_ID';
+[[ ! -v CIRCLE_WORKFLOW_ID ]] && die 'missing environment variable CIRCLE_WORKFLOW_ID';
 [[ ! -v EB_ENVIRONMENT ]] && die 'missing environment variable EB_ENVIRONMENT';
 
 hash eb 2>/dev/null || die 'missing depedency eb (awsebcli)';
